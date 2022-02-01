@@ -1,6 +1,5 @@
 --Creates employee tracker database
 DROP DATABASE IF EXISTS employee_trackerDB;
-
 CREATE DATABASE employee_trackerDB;
 
 USE employee_trackerDB;
@@ -11,13 +10,15 @@ CREATE TABLE department (
   name VARCHAR(30) NOT NULL
 );
 
--- Creates role table
+-- Creates employee role table
 CREATE TABLE role (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30),
   salary DECIMAL,
   department_id INT,
-  FOREIGN KEY (department_id) REFERENCES department(id)
+  --Foreign key
+  FOREIGN KEY (department_id)
+  REFERENCES department(id)
 );
 
 -- Creates employee table
@@ -27,8 +28,11 @@ CREATE TABLE employee (
   last_name VARCHAR(30),
   manager_id INT,
   role_id INT,
-  FOREIGN KEY (role_id) REFERENCES role(id),
-  FOREIGN KEY (manager_id) REFERENCES employee(id)
+  --Foreign key
+  FOREIGN KEY (role_id)
+  REFERENCES role(id),
+  FOREIGN KEY (manager_id)
+  REFERENCES employee(id)
 
 );
 
