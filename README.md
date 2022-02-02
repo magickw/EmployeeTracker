@@ -11,7 +11,6 @@ This application is a CLI application using myslq to create a data base manageme
 - [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Deployed Link](#deployed-link)
 - [Demo](#demo)
 - [Built With](#built-with)
 - [License](#license)
@@ -36,10 +35,6 @@ Type the following command in your termimal:
 `node server.js`
 
 Then open your browser and type http://localhost:3000/ to run this application on your local machine.
-
-
-## Deployed Link
-The link to the deployed application is: https://note-taker-bfguo.herokuapp.com.
 
 ## Demo
 Below is the demostration of this application:
