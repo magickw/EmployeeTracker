@@ -4,7 +4,7 @@
 ![badge](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Description
-This application is a CLI application using myslq to create a data base management system for employee and company information.
+This application is a CLI application using mySQL to create a database management system for employee and company information.
 
 ## Table of Contents
 - [Description](#description)
@@ -42,7 +42,6 @@ Below is the demostration of this application:
 
 
 **[⬆ back to top](#table-of-contents)**
-
 ## Built With
 
 * [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)

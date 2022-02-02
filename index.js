@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Connect to database
-const company = mysql.createConnection(
+const db = mysql.createConnection(
   {
     host: 'localhost',
     // MySQL username,
@@ -23,9 +23,8 @@ const company = mysql.createConnection(
   console.log(`Connected to the company_db database.`)
 );
 
-company.connect(function(err) {
+db.connect(function(err) {
   if (err) throw err
-  console.log("Connected as Id" + connection.threadId)
   introPrompt();
 });
 
@@ -79,18 +78,29 @@ function introPrompt() {
               addDepartment();
             break;
           case "Exit":
-              company.end();
+            db.end();
             break;
   
           }
   });
 }
 
-// Default response for any other request (Not Found)
-app.use((req, res) => {
-  res.status(404).end();
-});
+//View All Employees
+function viewAllEmployees() {
+  console.log("View all employees\n");
+  var query =
+  `SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(employee.first_name, ' ' , employee.last_name) AS Manager 
+  FROM employee 
+  INNER JOIN role ON role.id = employee.role_id
+  INNER JOIN department ON department.id = role.department_id
+  LEFT JOIN employee e ON employee.manager_id = e.id`
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  db.query(query, 
+    function(err, res) {
+      if (err) throw err
+      console.table(res)
+      introPromp();
+    });
+}
+
+
