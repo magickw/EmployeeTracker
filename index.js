@@ -17,37 +17,12 @@ const db = mysql.createConnection(
     user: 'root',
     // MySQL password
     password: 'password',
-    database: 'classlist_db'
+    database: 'employee_trackerDB'
   },
-  console.log(`Connected to the classlist_db database.`)
+  console.log(`Connected to the employee_trackerDB database.`)
 );
 
-// Query database
-db.query('SELECT * FROM students', function (err, results) {
-  console.log("********* SELECT * FROM students results[0]");
-  console.log(results[0]);
-  console.log("*********");
-});
 
-db.query('SELECT first_name, last_name FROM students', function (err, results) {
-  console.log("********* SELECT first_name, last_name FROM students");
-  console.log(results);
-  console.log("*********");
-});
-
-
-// Query database
-db.query('SELECT * FROM students WHERE first_name = "Elliot"', function (err, results) {
-  console.log("********* SELECT * FROM students WHERE first_name = 'Elliot', results[0]");
-  console.log(results[0]);
-  console.log("*********");
-});
-
-db.query('SELECT * FROM students WHERE enrolled = true', function (err, results) {
-  console.log("********* SELECT * FROM students WHERE enrolled = true");
-  console.log(results);
-  console.log("*********");
-});
 
 // Default response for any other request (Not Found)
 app.use((req, res) => {
