@@ -18,7 +18,7 @@ const company = mysql.createConnection(
     user: 'root',
     // MySQL password
     password: 'password',
-    database: 'employee_trackerDB'
+    database: 'company_db'
   },
   console.log(`Connected to the company_db database.`)
 );
@@ -37,28 +37,32 @@ function introPrompt() {
   message: "What would you like to do?",
   name: "choice",
   choices: [
-            "View All Employees?", 
-            "View All Employees By Roles?",
-            "View All Emplyees By Deparments", 
+            "View All Employees", 
+            "View All Employees by Roles",
+            "View All Emplyees by Deparments",
+            //"View All Employees by Manager" 
             "Update Employee",
-            "Add Employee?",
-            "Add Role?",
-            "Add Department?"
+            "Add Employee",
+            "Add Role",
+            "Add Department",
+            "Exit"
           ]
   }
 ]).then(function(val) {
       switch (val.choice) {
-          case "View All Employees?":
+          case "View All Employees":
             viewAllEmployees();
           break;
   
-        case "View All Employees By Roles?":
+        case "View All Employees by Roles":
             viewAllRoles();
           break;
-        case "View All Emplyees By Deparments":
+        case "View All Emplyees by Deparments":
             viewAllDepartments();
           break;
-        
+        // case "View All Employees by Managers":
+        //     viewAllManagers();
+        //   break;
         case "Add Employee?":
               addEmployee();
             break;
@@ -73,6 +77,9 @@ function introPrompt() {
     
           case "Add Department?":
               addDepartment();
+            break;
+          case "Exit":
+              company.end();
             break;
   
           }
