@@ -2,7 +2,7 @@ const express = require('express');
 // Import and require mysql2
 const mysql = require('mysql2');
 
-//inital port
+//initial port
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -29,7 +29,7 @@ connection.connect(function(err) {
   introPrompt();
 });
 
-//Introducing prompt//
+//Introducing prompts//
 function introPrompt() {
   inquirer.prompt([
   {
@@ -40,10 +40,10 @@ function introPrompt() {
             "View All Employees?", 
             "View All Employees By Roles?",
             "View All Emplyees By Deparments", 
-            "Update an Employee",
-            "Add an Employee?",
-            "Add a Role?",
-            "Add a Department?"
+            "Update Employee",
+            "Add Employee?",
+            "Add Role?",
+            "Add Department?"
           ]
   }
 ]).then(function(val) {
@@ -59,24 +59,24 @@ function introPrompt() {
             viewAllDepartments();
           break;
         
-        case "Add  an Employee?":
+        case "Add Employee?":
               addEmployee();
             break;
 
-        case "Update an Employee":
+        case "Update Employee":
               updateEmployee();
             break;
     
-          case "Add a Role?":
+          case "Add Role?":
               addRole();
             break;
     
-          case "Add a Department?":
+          case "Add Department?":
               addDepartment();
             break;
   
           }
-  })
+  });
 }
 
 // Default response for any other request (Not Found)
