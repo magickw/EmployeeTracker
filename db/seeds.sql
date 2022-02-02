@@ -30,7 +30,7 @@ VALUE ("Jessica", "Lin", null, 1);
 INSERT INTO employee (first_name, last_name, manager_id, role_id)
 VALUE ("Tom", "Brady", null, 2);
 INSERT INTO employee (first_name, last_name, manager_id, role_id)
-VALUE ("Szu","Sun",null,3);
+VALUE ("Tzu","Sun",null,3);
 INSERT INTO employee (first_name, last_name, manager_id, role_id)
 VALUE ("Bill", "Clinton", 1, 4);
 INSERT INTO employee (first_name, last_name, manager_id, role_id)
