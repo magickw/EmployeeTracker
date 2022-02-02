@@ -1,8 +1,8 @@
 --Creates employee tracker database
-DROP DATABASE IF EXISTS employee_trackerDB;
-CREATE DATABASE employee_trackerDB;
+DROP DATABASE IF EXISTS company_db;
+CREATE DATABASE company_db;
 
-USE employee_trackerDB;
+USE company_db;
 
 --Creates department table
 CREATE TABLE department (
