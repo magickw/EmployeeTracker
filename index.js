@@ -99,7 +99,23 @@ function viewAllEmployees() {
     function(err, res) {
       if (err) throw err
       console.table(res)
-      introPromp();
+      introPrompt();
+    });
+}
+
+//View All Employees
+function viewAllRoles() {
+  var query =
+  `SELECT employee.first_name, employee.last_name, role.title AS Title
+  FROM employee
+  JOIN role
+  ON employee.role_id = role.id`
+
+  db.query(query, 
+    function(err, res) {
+      if (err) throw err
+      console.table(res)
+      introPrompt();
     });
 }
 
