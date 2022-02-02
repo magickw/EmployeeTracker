@@ -85,7 +85,7 @@ function introPrompt() {
   });
 }
 
-//View All Employees
+//1. View All Employees
 function viewAllEmployees() {
   console.log("View all employees\n");
   var query =
@@ -103,7 +103,7 @@ function viewAllEmployees() {
     });
 }
 
-//View All Employees
+//2. View All Roles
 function viewAllRoles() {
   var query =
   `SELECT employee.first_name, employee.last_name, role.title AS Title
@@ -119,4 +119,21 @@ function viewAllRoles() {
     });
 }
 
+//3. View All Employees By Departments
+function viewAllDepartments() {
+  var query =
+  `SELECT employee.first_name, employee.last_name, department.name AS Department
+  FROM employee
+  JOIN role
+  ON employee.role_id = role.id
+  JOIN department
+  ON role.department_id = department.id
+  ORDER BY employee.id`
 
+  db.query(query, 
+    function(err, res) {
+      if (err) throw err
+      console.table(res)
+      introPrompt();
+    });
+}
