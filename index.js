@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Connect to database
-const company_db = mysql.createConnection(
+const company = mysql.createConnection(
   {
     host: 'localhost',
     // MySQL username,
@@ -23,7 +23,7 @@ const company_db = mysql.createConnection(
   console.log(`Connected to the company_db database.`)
 );
 
-company_db.connect(function(err) {
+company.connect(function(err) {
   if (err) throw err
   console.log("Connected as Id" + connection.threadId)
   introPrompt();
