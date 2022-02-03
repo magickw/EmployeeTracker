@@ -31,7 +31,7 @@ const db = mysql.createConnection(
     // MySQL username,
     user: 'root',
     // MySQL password
-    password: "Ghjkl;'",
+    password: 'password',
     database: 'company_db'
   },
   console.log(`Connected to the company_db database.`)
@@ -106,11 +106,12 @@ function menuPrompt() {
 //View All Employees
 function viewAllEmployees() {
   console.log("View all employees\n");
-  db.query(`SELECT employee.id AS Employee_ID, employee.first_name AS First_Name, employee.last_name AS Last_Name, role.title AS Title, role.salary AS Salary, department.name AS Department, CONCAT(e.first_name, ' ' , e.last_name) AS Manager 
+  db.query(`SELECT employee.id AS ID, employee.first_name AS First_Name, employee.last_name AS Last_Name, role.title AS Title, role.salary AS Salary, department.name AS Department, CONCAT(e.first_name, ' ' , e.last_name) AS Manager 
   FROM employee 
   INNER JOIN role ON role.id = employee.role_id
   INNER JOIN department ON department.id = role.department_id
-  LEFT JOIN employee e ON employee.manager_id = e.id`, (err, res) => {
+  LEFT JOIN employee e ON employee.manager_id = e.id
+  ORDER BY employee.id`, (err, res) => {
       if (err) throw err
       // console.table(res);
       printTable(res);
