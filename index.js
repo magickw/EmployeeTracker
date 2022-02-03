@@ -30,7 +30,7 @@ const db = mysql.createConnection(
     // MySQL username,
     user: 'root',
     // MySQL password
-    password: "'",
+    password: "Ghjkl;'",
     database: 'company_db'
   },
   console.log(`Connected to the company_db database.`)
@@ -105,14 +105,11 @@ function menuPrompt() {
 //View All Employees
 function viewAllEmployees() {
   console.log("View all employees\n");
-  var query =
-  `SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(employee.first_name, ' ' , employee.last_name) AS Manager 
+  db.query(`SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(employee.first_name, ' ' , employee.last_name) AS Manager 
   FROM employee 
   INNER JOIN role ON role.id = employee.role_id
   INNER JOIN department ON department.id = role.department_id
-  LEFT JOIN employee ON employee.manager_id = employee.id`;
-
-  db.query(query, (err, res) => {
+  LEFT JOIN employee ON employee.manager_id = employee.id`, (err, res) => {
       if (err) throw err
       console.table(res)
       //Run the introducing prompts again
@@ -123,13 +120,10 @@ function viewAllEmployees() {
 //View All Employees by Role
 function viewEmployeesByRole() {
   console.log("View All Employees By Roles\n");
-  var query =
-  `SELECT employee.first_name, employee.last_name, role.title AS Title
+  db.query(`SELECT employee.first_name, employee.last_name, role.title AS Title
   FROM employee
   JOIN role
-  ON employee.role_id = role.id`
-
-  db.query(query, (err, res) => {
+  ON employee.role_id = role.id`, (err, res) => {
       if (err) throw err
       console.table(res)
       menuPrompt();
@@ -139,17 +133,14 @@ function viewEmployeesByRole() {
 //View All Employees By Department
 function viewEmployeesByDepartment() {
   console.log("View All Employees By Departments\n");
-  var query =
-  `SELECT employee.first_name, employee.last_name, department.name AS Department
+  db.query(`SELECT employee.first_name, employee.last_name, department.name AS Department
   FROM employee
   JOIN role
   ON employee.role_id = role.id
   JOIN department
   ON role.department_id = department.id
-  ORDER BY employee.id`
-
-  db.query(query, 
-    function(err, res) {
+  ORDER BY employee.id`, 
+  (err, res) => {
       if (err) throw err
       console.table(res)
       menuPrompt();
@@ -161,7 +152,7 @@ function viewEmployeesByDepartment() {
 
 function selectRole() {
   var roleArr = [];
-  db.query("SELECT * FROM role",  (err, res) => {
+  db.query(`SELECT * FROM role`,  (err, res) => {
     if (err) throw err
     for (var i = 0; i < res.length; i++) {
       roleArr.push(res[i].title);
@@ -174,7 +165,7 @@ function selectRole() {
 // Select Manager for Add Employee prompt
 function selectManager() {
   var managersArr = [];
-  db.query("SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",  (err, res) => {
+  db.query(`SELECT first_name, last_name FROM employee WHERE manager_id IS NULL`,  (err, res) => {
     if (err) throw err
     for (var i = 0; i < res.length; i++) {
       managersArr.push(res[i].first_name);
@@ -235,7 +226,7 @@ function addEmployee() {
     }, (err, res) => {
         if (err) throw err
         console.table(res);
-        console.log( "1 new employeed is added successfully: res.firstName + " " + res.lastName!\n");
+        console.log( `1 new employeed is added successfully: ${res.firstName} ${res.lastName}!\n`);
         menuPrompt();
     })
 
@@ -270,7 +261,7 @@ function addRole() {
             function(err) {
                 if (err) throw err
                 console.table(res);
-                console.log( "The Role is added successfully!\n");
+                console.log( "1 new role is added successfully!\n");
                 menuPrompt();
             }
         )
@@ -292,7 +283,7 @@ function addDepartment() {
     db.query(`INSERT INTO department (name) VALUES('${res.department}')`, (err,res) =>{
             if (err) throw err
             console.table(res);
-            console.log( "The Department is added successfully!\n");
+            console.log( "One new department is added successfully!\n");
             menuPrompt();
           }
       )
