@@ -106,7 +106,7 @@ function menuPrompt() {
 //View All Employees
 function viewAllEmployees() {
   console.log("View all employees\n");
-  db.query(`SELECT employee.first_name AS FirstName, employee.last_name AS LastName, role.title AS Title, role.salary AS Salary, department.name AS Department, CONCAT(e.first_name, ' ' , e.last_name) AS Manager 
+  db.query(`SELECT employee.id AS Employee_ID, employee.first_name AS First_Name, employee.last_name AS Last_Name, role.title AS Title, role.salary AS Salary, department.name AS Department, CONCAT(e.first_name, ' ' , e.last_name) AS Manager 
   FROM employee 
   INNER JOIN role ON role.id = employee.role_id
   INNER JOIN department ON department.id = role.department_id
@@ -122,7 +122,7 @@ function viewAllEmployees() {
 //View All Employees by Role
 function viewEmployeesByRole() {
   console.log("View All Employees By Role\n");
-  db.query(`SELECT employee.first_name AS FirstName, employee.last_name AS LastName, role.title AS Title
+  db.query(`SELECT employee.first_name AS First_Name, employee.last_name AS Last_Name, role.title AS Title
   FROM employee
   JOIN role
   ON employee.role_id = role.id`, (err, res) => {
@@ -136,7 +136,7 @@ function viewEmployeesByRole() {
 //View All Employees By Department
 function viewEmployeesByDepartment() {
   console.log("View All Employees By Department\n");
-  db.query(`SELECT employee.first_name AS FirstName, employee.last_name AS LastName, department.name AS Department
+  db.query(`SELECT employee.first_name AS First_Name, employee.last_name AS Last_Name, department.name AS Department
   FROM employee
   JOIN role
   ON employee.role_id = role.id
@@ -229,7 +229,7 @@ function addEmployee() {
         
     }, (err, res) => {
         if (err) throw err
-        console.table(res);
+        // console.table(res);
         console.log( `1 new employeed is added successfully: ${res.firstName} ${res.lastName}!\n`);
         menuPrompt();
     })
