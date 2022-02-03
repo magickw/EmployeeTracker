@@ -5,10 +5,10 @@ const express = require('express');
 const mysql = require('mysql2');
 const figlet = require('figlet');
 
-let roles;
-let departments;
-let managers;
-let employees;
+// let roles;
+// let departments;
+// let managers;
+// let employees;
 
 //initial port
 const PORT = process.env.PORT || 3001;
@@ -112,8 +112,7 @@ function viewAllEmployees() {
   INNER JOIN department ON department.id = role.department_id
   LEFT JOIN employee ON employee.manager_id = employee.id`;
 
-  db.query(query, 
-    function(err, res) {
+  db.query(query, (err, res) => {
       if (err) throw err
       console.table(res)
       //Run the introducing prompts again
@@ -130,8 +129,7 @@ function viewEmployeesByRole() {
   JOIN role
   ON employee.role_id = role.id`
 
-  db.query(query, 
-    function(err, res) {
+  db.query(query, (err, res) => {
       if (err) throw err
       console.table(res)
       menuPrompt();
@@ -163,7 +161,7 @@ function viewEmployeesByDepartment() {
 
 function selectRole() {
   var roleArr = [];
-  db.query("SELECT * FROM role", function(err, res) {
+  db.query("SELECT * FROM role",  (err, res) => {
     if (err) throw err
     for (var i = 0; i < res.length; i++) {
       roleArr.push(res[i].title);
@@ -173,7 +171,7 @@ function selectRole() {
   return roleArr;
 }
 
-
+// Select Manager for Add Employee prompt
 function selectManager() {
   var managersArr = [];
   db.query("SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",  (err, res) => {
@@ -221,7 +219,7 @@ function addEmployee() {
         name: "role",
         type: "list",
         message: "What is the employee's role? ",
-        choice: selectRole()
+        choices: selectRole()
       }
   ]).then(function (res) {
     //Index starting from 0
@@ -234,10 +232,10 @@ function addEmployee() {
         manager_id: managerId,
         role_id: roleId
         
-    }, function(err){
+    }, (err, res) => {
         if (err) throw err
         console.table(res);
-        console.log( "The employeed is added successfully!\n");
+        console.log( "1 new employeed is added successfully: res.firstName + " " + res.lastName!\n");
         menuPrompt();
     })
 
@@ -330,3 +328,26 @@ function updateEmployee() {
             message: "What is the Employees new title? ",
             choices: selectRole()
           },
+      ]).then(function(res) {
+        var roleId = selectRole().indexOf(res.role) + 1
+        db.query(`UPDATE employee SET WHERE ?`, 
+        {
+          last_name: res.lastName
+           
+        }, 
+        {
+          role_id: roleId
+           
+        }, 
+        function(err){
+            if (err) throw err
+            console.table(res)
+            console.log( "The Employee is updated successfully!\n");
+            menuPrompt();
+
+          })
+  
+        });
+      });
+    
+      }
