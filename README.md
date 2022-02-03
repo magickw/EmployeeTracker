@@ -38,6 +38,7 @@ Then open your browser and type http://localhost:3000/ to run this application o
 
 ## Demo
 Below is the demostration of this application:
+<img src="images/demo.gif" alt="demo" />
 <img src="images/screenshot.png" alt="screenshot" />
 
 
