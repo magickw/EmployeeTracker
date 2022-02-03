@@ -239,24 +239,26 @@ function addRole() {
         {
           name: "Title",
           type: "input",
-          message: "What is the roles Title?"
+          message: "What is the roles Title?",
+          default: "CTO"
         },
         {
           name: "Salary",
           type: "input",
-          message: "What is the Salary?"
+          message: "What is the Salary?",
+          default: "200000"
 
         } 
-    ]).then(function(res) {
+    ]).then(function(answers) {
         var query = `INSERT INTO employee SET ?`;
         db.query(query, 
             {
-              title: res.Title,
-              salary: res.Salary,
+              title: answers.Title,
+              salary: answers.Salary,
             },
             function(err) {
                 if (err) throw err
-                console.table(res);
+                console.table(answers);
                 console.log( "The Role is added successfully!\n");
                 introPrompt();
             }
