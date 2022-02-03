@@ -162,7 +162,7 @@ async function selectRole() {
 }
 
 async function selectManager() {
-  var query = "SELECT * FROM employee WHERE manager_id IS NULL";
+  var query = `SELECT * FROM employee WHERE manager_id IS NULL`;
   const rows = await db.query(query);
   //Creates a enploy array
   let employeeArr = [];
@@ -213,7 +213,8 @@ function addEmployee() {
     //Index starting from 0
     var roleId = selectRole().indexOf(answers.role) + 1
     var managerId = selectManager().indexOf(answers.choice) + 1
-    db.query("INSERT INTO employee SET ?", 
+    var query = `INSERT INTO employee SET ?`;
+    db.query(query, 
     {
         first_name: answers.firstName,
         last_name: answers.lastName,
@@ -229,6 +230,43 @@ function addEmployee() {
 
 })
 }
+
+//Add Role
+function addRole() {
+  var query = `SELECT role.title AS Title, role.salary AS Salary FROM role`;
+  db.query(query, function(err, res) {
+    inquirer.prompt([
+        {
+          name: "Title",
+          type: "input",
+          message: "What is the roles Title?"
+        },
+        {
+          name: "Salary",
+          type: "input",
+          message: "What is the Salary?"
+
+        } 
+    ]).then(function(res) {
+        var query = `INSERT INTO employee SET ?`;
+        db.query(query, 
+            {
+              title: res.Title,
+              salary: res.Salary,
+            },
+            function(err) {
+                if (err) throw err
+                console.table(res);
+                console.log( "The Role is added successfully!\n");
+                introPrompt();
+            }
+        )
+
+    });
+  });
+  }
+
+  
 //----------------------------------------------------------------------Update-----------------------------------------------------------------------------//
 //7. Update Employee
 
