@@ -37,8 +37,8 @@ function introPrompt() {
   name: "choice",
   choices: [
             "View All Employees", 
-            "View All Employees by Roles",
-            "View All Emplyees by Deparments",
+            "View All Employees by Role",
+            "View All Emplyees by Deparment",
             //"View All Employees by Manager" 
             "Add Employee",
             "Add Role",
@@ -56,11 +56,13 @@ function introPrompt() {
         case "View All Employees by Role":
           viewEmployeesByRole();
           break;
+
         case "View All Emplyees by Deparment":
           viewEmployeesByDepartment();
           break;
+
         // case "View All Employees by Managers":
-        //     viewAllManagers();
+        //     viewEmployeesByManager();
         //   break;
         case "Add Employee":
               addEmployee();
@@ -85,7 +87,7 @@ function introPrompt() {
   });
 }
 //----------------------------------------------------------------------View-----------------------------------------------------------------------------//
-//1. View All Employees
+//View All Employees
 function viewAllEmployees() {
   console.log("View all employees\n");
   var query =
@@ -102,11 +104,12 @@ function viewAllEmployees() {
     function(err, res) {
       if (err) throw err
       console.table(res)
+      //Run the introducing prompts again
       introPrompt();
     });
 }
 
-//2. View All Employees by Roles
+//View All Employees by Role
 function viewEmployeesByRole() {
   console.log("View All Employees By Roles\n");
   var query =
@@ -123,7 +126,7 @@ function viewEmployeesByRole() {
     });
 }
 
-//3. View All Employees By Departments
+//View All Employees By Department
 function viewEmployeesByDepartment() {
   console.log("View All Employees By Departments\n");
   var query =
@@ -143,12 +146,89 @@ function viewEmployeesByDepartment() {
     });
 }
 
-
-
 //----------------------------------------------------------------------Add-----------------------------------------------------------------------------//
+// Select Role Title for Add Employee prompt
+async function selectRole() {
+  var query = `SELECT title FROM role`;
+  const rows = await db.query(query);
+  //Creates a role array
+  let roleArr = [];
+  //The for...of statement creates a loop iterating over iterable objects
+  for(const row of rows) {
+      roles.push(row.title);
+  }
 
+  return roleArr;
+}
+
+async function selectManager() {
+  var query = "SELECT * FROM employee WHERE manager_id IS NULL";
+  const rows = await db.query(query);
+  //Creates a enploy array
+  let employeeArr = [];
+  for(const employee of rows) {
+      employeeNames.push(employee.first_name + " " + employee.last_name);
+  }
+  return employeeArr;
+}
+
+//Add an Employee
+function addEmployee() { 
+  inquirer.prompt([
+      {
+        name: "firstname",
+        type: "input",
+        message: "What is the employee's first name?",
+        default: "John",
+        validate: addFirstName => {
+          if (addFirstName) {
+              return true;
+          } else {
+              console.log("Please enter a first name");
+              return false;
+          }
+        }
+      },
+      {
+        name: "lastname",
+        type: "input",
+        message: "What is the employee's last name?",
+        default: "Smith",
+        validate: addLastName => {
+        if (addLastName) {
+            return true;
+        } else {
+            console.log("Please enter a last name");
+            return false;
+          }
+        }
+      },
+      {
+        name: "role",
+        type: "list",
+        message: "What is the employee's role? ",
+        choices: selectRole()
+      }
+  ]).then(function (answers) {
+    var roleId = selectRole().indexOf(answers.role) + 1
+    var managerId = selectManager().indexOf(answers.choice) + 1
+    db.query("INSERT INTO employee SET ?", 
+    {
+        first_name: answers.firstName,
+        last_name: answers.lastName,
+        manager_id: managerId,
+        role_id: roleId
+        
+    }, function(err){
+        if (err) throw err
+        console.table(answers);
+        introPrompt();
+    })
+
+})
+}
 //----------------------------------------------------------------------Update-----------------------------------------------------------------------------//
-//4. Update Employee
+//7. Update Employee
 
 function updateEmployee() {
   console.log("Update Employee\n");
