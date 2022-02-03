@@ -23,4 +23,4 @@ VALUES ("Jessica", "Lin", null, 1),
       ("Bill", "Clinton", 1, 4),
       ("Michael", "Jordan", 4, 5),
       ("Baofeng", "Guo", 1, 6),
-      ("Kamala", "Harris", 2, 7);
+      ("Siming", "Tian", 2, 7);
