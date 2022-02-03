@@ -127,7 +127,7 @@ function viewEmployeesByRole() {
   JOIN role
   ON employee.role_id = role.id`, (err, res) => {
       if (err) throw err
-      console.table(res);
+      // console.table(res);
       printTable(res);
       menuPrompt();
     });
@@ -145,7 +145,7 @@ function viewEmployeesByDepartment() {
   ORDER BY employee.id`, 
   (err, res) => {
       if (err) throw err
-      console.table(res);
+      // console.table(res);
       printTable(res);
       menuPrompt();
     });
