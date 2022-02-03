@@ -32,7 +32,7 @@ And then run the following commands to install the dependencies:
 ## Usage
 Type the following command in your termimal:
 
-`node server.js`
+`npm start`
 
 Then open your browser and type http://localhost:3000/ to run this application on your local machine.
 

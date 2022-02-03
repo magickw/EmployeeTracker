@@ -17,7 +17,7 @@ const db = mysql.createConnection(
     // MySQL username,
     user: 'root',
     // MySQL password
-    password: 'password',
+    password: '',
     database: 'company_db'
   },
   console.log(`Connected to the company_db database.`)
@@ -40,10 +40,10 @@ function introPrompt() {
             "View All Employees by Roles",
             "View All Emplyees by Deparments",
             //"View All Employees by Manager" 
-            "Update Employee",
             "Add Employee",
             "Add Role",
             "Add Department",
+            "Update Employee",
             "Exit"
           ]
   }
@@ -53,16 +53,16 @@ function introPrompt() {
             viewAllEmployees();
           break;
   
-        case "View All Employees by Roles":
-            viewAllRoles();
+        case "View All Employees by Role":
+          viewEmployeesByRole();
           break;
-        case "View All Emplyees by Deparments":
-            viewAllDepartments();
+        case "View All Emplyees by Deparment":
+          viewEmployeesByDepartment();
           break;
         // case "View All Employees by Managers":
         //     viewAllManagers();
         //   break;
-        case "Add Employee?":
+        case "Add Employee":
               addEmployee();
             break;
 
@@ -84,16 +84,19 @@ function introPrompt() {
           }
   });
 }
-
+//----------------------------------------------------------------------View-----------------------------------------------------------------------------//
 //1. View All Employees
 function viewAllEmployees() {
   console.log("View all employees\n");
   var query =
   `SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(employee.first_name, ' ' , employee.last_name) AS Manager 
   FROM employee 
-  INNER JOIN role ON role.id = employee.role_id
-  INNER JOIN department ON department.id = role.department_id
-  LEFT JOIN employee e ON employee.manager_id = e.id`
+  INNER JOIN role
+  ON role.id = employee.role_id
+  INNER JOIN department
+  ON department.id = role.department_id
+  LEFT JOIN employee
+  ON employee.manager_id = employee.id`
 
   db.query(query, 
     function(err, res) {
@@ -103,8 +106,9 @@ function viewAllEmployees() {
     });
 }
 
-//2. View All Roles
-function viewAllRoles() {
+//2. View All Employees by Roles
+function viewEmployeesByRole() {
+  console.log("View All Employees By Roles\n");
   var query =
   `SELECT employee.first_name, employee.last_name, role.title AS Title
   FROM employee
@@ -120,7 +124,8 @@ function viewAllRoles() {
 }
 
 //3. View All Employees By Departments
-function viewAllDepartments() {
+function viewEmployeesByDepartment() {
+  console.log("View All Employees By Departments\n");
   var query =
   `SELECT employee.first_name, employee.last_name, department.name AS Department
   FROM employee
@@ -136,4 +141,37 @@ function viewAllDepartments() {
       console.table(res)
       introPrompt();
     });
+}
+
+
+
+//----------------------------------------------------------------------Add-----------------------------------------------------------------------------//
+
+//----------------------------------------------------------------------Update-----------------------------------------------------------------------------//
+//4. Update Employee
+
+function updateEmployee() {
+  console.log("Update Employee\n");
+  var query =
+  `SELECT employee.last_name, role.title
+  FROM employee
+  JOIN role
+  ON employee.role_id = role.id`
+
+  db.query(query, function(err, res) {
+  // console.log(res)
+   if (err) throw err
+   console.log(res)
+  inquirer.prompt([
+        {
+          
+      function(err){
+          if (err) throw err
+          console.table(val)
+          introPrompt();
+      })
+
+  });
+});
+
 }
