@@ -210,6 +210,7 @@ function addEmployee() {
         choices: selectRole()
       }
   ]).then(function (answers) {
+    //Index starting from 0
     var roleId = selectRole().indexOf(answers.role) + 1
     var managerId = selectManager().indexOf(answers.choice) + 1
     db.query("INSERT INTO employee SET ?", 
@@ -222,6 +223,7 @@ function addEmployee() {
     }, function(err){
         if (err) throw err
         console.table(answers);
+        console.log( "The employeed is added successfully!\n");
         introPrompt();
     })
 
