@@ -3,7 +3,9 @@ const inquirer = require('inquirer');
 const express = require('express');
 // Import and require mysql2
 const mysql = require('mysql2');
+//For Figletfont spec
 const figlet = require('figlet');
+//For console table printing
 const { printTable } = require('console-table-printer');
 
 // let roles;

@@ -29,17 +29,22 @@ And then run the following commands to install the dependencies:
 
 `npm install express`
 
+Optional installations
+
+`npm install console-table-printer --save` -- Printing Simple Table with Coloring rows on your console.
+
+`npm install figlet` -- Generates text banners
+
+
 ## Usage
 Type the following command in your termimal:
 
 `npm start`
 
-Then open your browser and type http://localhost:3000/ to run this application on your local machine.
 
 ## Demo
 Below is the demostration of this application:
 <img src="images/demo.gif" alt="demo" />
-<img src="images/screenshot.png" alt="screenshot" />
 
 
 **[⬆ back to top](#table-of-contents)**
