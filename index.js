@@ -25,6 +25,7 @@ const db = mysql.createConnection(
 
 db.connect(function(err) {
   if (err) throw err
+  //runs the introducing prompts
   introPrompt();
 });
 
@@ -86,6 +87,7 @@ function introPrompt() {
           }
   });
 }
+
 //----------------------------------------------------------------------View-----------------------------------------------------------------------------//
 //View All Employees
 function viewAllEmployees() {
@@ -268,7 +270,30 @@ function addRole() {
   });
   }
 
-  
+  //Add Department
+function addDepartment() { 
+  inquirer.prompt([
+      {
+        name: "name",
+        type: "input",
+        message: "What dpartment would you like to add?"
+      }
+  ]).then(function(answer) {
+      var query = `INSERT INTO department SET ?`;
+      db.query(query,
+          {
+            name: answer.name
+          },
+          function(err) {
+              if (err) throw err
+              console.table(answer);
+              console.log( "The Department is added successfully!\n");
+              introPrompt();
+          }
+      )
+  })
+}
+
 //----------------------------------------------------------------------Update-----------------------------------------------------------------------------//
 //7. Update Employee
 
