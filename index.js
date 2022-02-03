@@ -4,6 +4,7 @@ const express = require('express');
 // Import and require mysql2
 const mysql = require('mysql2');
 const figlet = require('figlet');
+const { printTable } = require('console-table-printer');
 
 // let roles;
 // let departments;
@@ -111,7 +112,8 @@ function viewAllEmployees() {
   INNER JOIN department ON department.id = role.department_id
   LEFT JOIN employee ON employee.manager_id = employee.id`, (err, res) => {
       if (err) throw err
-      console.table(res)
+      console.table(res);
+      printTable(res);
       //Run the introducing prompts again
       menuPrompt();
     });
@@ -119,21 +121,22 @@ function viewAllEmployees() {
 
 //View All Employees by Role
 function viewEmployeesByRole() {
-  console.log("View All Employees By Roles\n");
-  db.query(`SELECT employee.first_name, employee.last_name, role.title AS Title
+  console.log("View All Employees By Role\n");
+  db.query(`SELECT employee.first_name AS FirstName, employee.last_name AS LastName, role.title AS Title
   FROM employee
   JOIN role
   ON employee.role_id = role.id`, (err, res) => {
       if (err) throw err
-      console.table(res)
+      console.table(res);
+      printTable(res);
       menuPrompt();
     });
 }
 
 //View All Employees By Department
 function viewEmployeesByDepartment() {
-  console.log("View All Employees By Departments\n");
-  db.query(`SELECT employee.first_name, employee.last_name, department.name AS Department
+  console.log("View All Employees By Department\n");
+  db.query(`SELECT employee.first_name AS FirstName, employee.last_name AS LastName, department.name AS Department
   FROM employee
   JOIN role
   ON employee.role_id = role.id
@@ -142,7 +145,8 @@ function viewEmployeesByDepartment() {
   ORDER BY employee.id`, 
   (err, res) => {
       if (err) throw err
-      console.table(res)
+      console.table(res);
+      printTable(res);
       menuPrompt();
     });
 }
