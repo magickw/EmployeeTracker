@@ -7,9 +7,11 @@ const mysql = require('mysql2');
 const figlet = require('figlet');
 //For console table printing
 const { printTable } = require('console-table-printer');
+const { from } = require('mute-stream');
 
 const roleArr = [];
 const managersArr = [];
+// let roles;
 // let departments;
 // let managers;
 // let employees;
@@ -47,6 +49,10 @@ db.connect(function(err) {
   if (err) throw err
   //runs menu prompts
   menuPrompt();
+  // getRoles();
+  // getDepartments();
+  // getManagers();
+  // getEmployees();
 });
 
 //Menue prompts//
@@ -124,17 +130,46 @@ function menuPrompt() {
   });
 }
 
+// function getRoles(){
+//   db.query(`SELECT id, title FROM role`, (err, res) => {
+//     if (err) throw err;
+//     roles = res;
+//   })
+// };
+
+// function getDepartments(){
+//   db.query(`SELECT id, name FROM department`, (err, res) => {
+//     if (err) throw err;
+//     departments = res;
+//   })
+// };
+
+// function getManagers(){
+//   db.query(`SELECT id, first_name, CONCAT_WS(' ', first_name, last_name) AS Managers FROM employee`, (err, res) => {
+//     if (err) throw err;
+//     managers = res;
+//   })
+// };
+
+// function getEmployees(){
+//   db.query(`SELECT id, CONCAT_WS(' ', first_name, last_name) AS Employees FROM employee`, (err, res) => {
+//     if (err) throw err;
+//     managers = res;
+//   })
+// };
+
 //----------------------------------------------------------------------View-----------------------------------------------------------------------------//
+
 //View All Employees
 function viewAllEmployees() {
   console.log("View all employees\n");
-  db.query(`SELECT employee.id AS ID, employee.first_name AS First_Name, employee.last_name AS Last_Name, role.title AS Title, role.salary AS Salary, department.name AS Department, CONCAT(e.first_name, ' ' , e.last_name) AS Manager 
+  db.query(`SELECT employee.id AS ID, employee.first_name AS First_Name, employee.last_name AS Last_Name, role.title AS Title, role.salary AS Salary($), department.name AS Department, CONCAT(e.first_name, ' ' , e.last_name) AS Manager 
   FROM employee 
   INNER JOIN role ON role.id = employee.role_id
   INNER JOIN department ON department.id = role.department_id
   LEFT JOIN employee e ON employee.manager_id = e.id
   ORDER BY employee.id`, (err, res) => {
-      if (err) throw err
+      if (err) throw err;
       // console.table(res);
       printTable(res);
       //Run the menu prompts again
@@ -316,7 +351,7 @@ function addRole() {
                 if (err) throw err
                 // console.table(res);
                 // printTable(res);
-                console.log( "1 new role is added successfully!\n");
+                console.log( "One new role is added successfully!\n");
                 menuPrompt();
             }
         )
@@ -412,7 +447,7 @@ function deleteRole() {
     ]).then((res) => {
       var roleId = selectRole().indexOf(res.role) + 1;
       var query = `DELETE FROM role WHERE id="${roleId}"`;
-      db.query(query, (err, row) => {
+      db.query(query, (err, res) => {
         if (err) throw err;
         console.log("A role is deleted");
         menuPrompt();
