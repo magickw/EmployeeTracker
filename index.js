@@ -122,7 +122,7 @@ function viewAllEmployees() {
       if (err) throw err
       // console.table(res);
       printTable(res);
-      //Run the introducing prompts again
+      //Run the menu prompts again
       menuPrompt();
     });
 }

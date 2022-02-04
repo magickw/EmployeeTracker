@@ -29,17 +29,17 @@ And then run the following commands to install the dependencies:
 
 `npm install express`
 
-Optional installations
+Optional installations:
 
 `npm install console-table-printer --save` -- Printing Simple Table with Coloring rows on your console.
 
-`npm install figlet` -- Generates text banners
+`npm install figlet` -- Generating text banner `Employee Tracker`
 
 
 ## Usage
 Type the following command in your termimal:
 
-`npm start`
+`node index.js`
 
 
 ## Demo
@@ -55,6 +55,7 @@ Below is the demostration of this application:
 * [Javascript](https://developer.mozilla.org/en-US/docs/Web/Javascript)
 * [NodeJS](https://nodejs.org/en/)
 * [ExpressJS](https://expressjs.com/)
+* [mySQL](https://www.mysql.com/)
   
 **[⬆ back to top](#table-of-contents)**
 
