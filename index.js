@@ -24,8 +24,11 @@ app.use(express.json());
 //FIGfont spec, run 'npm install figlet' to install
 figlet('EMPLOYEE TRACKER', (err, result) =>{
   console.log(err||result);
+  console.log("------------------------------------- Made by Baofeng Guo ------------------------------------\n");
 });
 
+
+console.log(`Connected to the company_db database.`);
 // Connect to database
 const db = mysql.createConnection(
   {
@@ -36,7 +39,6 @@ const db = mysql.createConnection(
     password: 'password',
     database: 'company_db'
   },
-  console.log(`Connected to the company_db database.`)
 );
 
 db.connect(function(err) {
@@ -246,7 +248,8 @@ function addEmployee() {
 //Add Role
 function addRole() {
   console.log("Adding a role\n");
-  db.query(`SELECT role.title AS Title, role.salary AS Salary, role.department_id AS Department_ID FROM role`, (err, res) => {
+  var query = `SELECT role.title AS Title, role.salary AS Salary, role.department_id AS Department_ID FROM role`;
+  db.query(query, (err, res) => {
     inquirer.prompt([
         {
           name: "title",
