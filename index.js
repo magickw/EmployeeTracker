@@ -28,7 +28,7 @@ figlet('EMPLOYEE TRACKER', (err, result) =>{
 });
 
 
-console.log(`Connected to the company_db database.`);
+
 // Connect to database
 const db = mysql.createConnection(
   {
@@ -39,6 +39,7 @@ const db = mysql.createConnection(
     password: 'password',
     database: 'company_db'
   },
+  console.log(`Connected to the company_db database.`)
 );
 
 db.connect(function(err) {
@@ -164,7 +165,8 @@ function viewEmployeesByDepartment() {
 
 function selectRole() {
   var roleArr = [];
-  db.query(`SELECT * FROM role`,  (err, res) => {
+  var query = `SELECT * FROM role`;
+  db.query(query,  (err, res) => {
     if (err) throw err
     for (var i = 0; i < res.length; i++) {
       roleArr.push(res[i].title);
@@ -177,7 +179,9 @@ function selectRole() {
 // Select Manager for Add Employee prompt
 function selectManager() {
   var managersArr = [];
-  db.query(`SELECT first_name, last_name FROM employee WHERE manager_id IS NULL`,  (err, res) => {
+  //Because the managers can't be their managers to themselves, whenever manager_id is null, the corresponding employee is a manager
+  var query = `SELECT first_name, last_name FROM employee WHERE manager_id IS NULL`;
+  db.query(query,  (err, res) => {
     if (err) throw err
     for (var i = 0; i < res.length; i++) {
       managersArr.push(res[i].first_name);
@@ -226,19 +230,15 @@ function addEmployee() {
       }
   ]).then(function (res) {
     //Index starting from 0
-    var roleId = selectRole().indexOf(res.role) + 1
-    var managerId = selectManager().indexOf(res.choice) + 1
-    db.query(`INSERT INTO employee SET ?`, 
-    {
-        first_name: res.firstName,
-        last_name: res.lastName,
-        manager_id: managerId,
-        role_id: roleId
-        
-    }, (err, res) => {
+    var firstName = res.firstname;
+    var lastName = res.lastname;
+    var roleId = selectRole().indexOf(res.role) + 1;
+    var managerId = selectManager().indexOf(res.choice) + 1;
+    var query =`INSERT INTO employee (first_name, last_name, manager_id, role_id) VALUES ("${firstName}", "${lastName}", "${managerId}", "${roleId}")`;
+    db.query(query, (err) => {
         if (err) throw err
-        // console.table(res);
-        console.log( `1 new employeed is added successfully: ${res.firstName} ${res.lastName}!\n`);
+        console.table(res);
+        console.log( `1 new employeed is added successfully!\n`);
         menuPrompt();
     })
 
@@ -266,15 +266,15 @@ function addRole() {
         },
         {
           type: "input",
-          message: "What is the department for this role?",
+          message: "What is the department ID for this role?",
           name: "departmentID"
         } 
     ]).then(function(res) {
-        const title = res.title;
-        const salary = res.salary;
-        const departmentID = res.departmentID;
+        var title = res.title;
+        var salary = res.salary;
+        var departmentID = res.departmentID;
         var query = `INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", "${departmentID}")`;
-        db.query(query, function(err, res) {
+        db.query(query, (err) => {
                 if (err) throw err
                 console.table(res);
                 console.log( "1 new role is added successfully!\n");
@@ -296,11 +296,11 @@ function addDepartment() {
         message: "What dpartment would you like to add?"
       }
   ]).then(function(res) {
-    const department = res.department;
-    query = `INSERT INTO department (name) VALUES ("${department}")`;
-    db.query(query, (err) =>{
+    var department = res.department;
+    var query = `INSERT INTO department (name) VALUES ("${department}")`;
+    db.query(query, (err, res) =>{
             if (err) throw err
-            // console.table(res);
+            console.table(res);
             console.log( "One new department is added successfully!\n");
             menuPrompt();
           }
