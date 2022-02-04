@@ -61,6 +61,9 @@ function menuPrompt() {
             "Add Role",
             "Add Department",
             "Update Employee",
+            // "Delete Employee",
+            // "Delete Role",
+            // "Delete Department",
             "Exit"
           ]
   }
@@ -282,14 +285,16 @@ function addDepartment() {
   console.log("Add Department\n");
   inquirer.prompt([
       {
-        name: "name",
+        name: "department",
         type: "input",
         message: "What dpartment would you like to add?"
       }
   ]).then(function(res) {
-    db.query(`INSERT INTO department (name) VALUES('${res.department}')`, (err,res) =>{
+    const department = res.department;
+    query = `INSERT INTO department (name) VALUES ("${department}")`;
+    db.query(query, (err) =>{
             if (err) throw err
-            console.table(res);
+            // console.table(res);
             console.log( "One new department is added successfully!\n");
             menuPrompt();
           }
@@ -298,7 +303,7 @@ function addDepartment() {
 }
 
 //----------------------------------------------------------------------Update-----------------------------------------------------------------------------//
-//7. Update Employee
+//Update Employee
 
 function updateEmployee() {
     db.query(`
@@ -349,3 +354,7 @@ function updateEmployee() {
       });
     
       }
+
+            // "Delete Employee",
+            // "Delete Role",
+            // "Delete Department",
