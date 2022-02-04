@@ -245,30 +245,33 @@ function addEmployee() {
 
 //Add Role
 function addRole() {
-  console.log("Add Role\n");
-  db.query(`SELECT role.title AS Title, role.salary AS Salary FROM role`, (err, res) => {
+  console.log("Adding a role\n");
+  db.query(`SELECT role.title AS Title, role.salary AS Salary, role.department_id AS Department_ID FROM role`, (err, res) => {
     inquirer.prompt([
         {
-          name: "Title",
+          name: "title",
           type: "input",
           message: "What is the role's title?",
           default: "CTO",
         },
         {
-          name: "Salary",
+          name: "salary",
           type: "input",
           message: "What is the role's salary?",
           default: "250000",
 
+        },
+        {
+          type: "input",
+          message: "What is the department for this role?",
+          name: "departmentID"
         } 
     ]).then(function(res) {
-        var query = `INSERT INTO employee SET ?`;
-        db.query(query, 
-            {
-              title: res.Title,
-              salary: res.Salary,
-            },
-            function(err) {
+        const title = res.title;
+        const salary = res.salary;
+        const departmentID = res.departmentID;
+        var query = `INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", "${departmentID}")`;
+        db.query(query, function(err, res) {
                 if (err) throw err
                 console.table(res);
                 console.log( "1 new role is added successfully!\n");
@@ -282,7 +285,7 @@ function addRole() {
 
   //Add Department
 function addDepartment() {
-  console.log("Add Department\n");
+  console.log("Adding a department\n");
   inquirer.prompt([
       {
         name: "department",
