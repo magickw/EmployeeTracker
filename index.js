@@ -8,7 +8,8 @@ const figlet = require('figlet');
 //For console table printing
 const { printTable } = require('console-table-printer');
 
-// let roles;
+const roleArr = [];
+const managersArr = [];
 // let departments;
 // let managers;
 // let employees;
@@ -64,8 +65,8 @@ function menuPrompt() {
             "Add Role",
             "Add Department",
             "Update Employee",
+            "Delete Role",
             // "Delete Employee",
-            // "Delete Role",
             // "Delete Department",
             "Exit"
           ]
@@ -102,6 +103,19 @@ function menuPrompt() {
           case "Add Department":
               addDepartment();
             break;
+
+          case "Delete Role":
+              deleteRole();
+           break;
+
+          // case "Delete Employee":
+          //      deleteRole();
+          //   break;
+
+          // case "Delete Department":
+          //     deleteDepartment();
+          //  break;
+            
           case "Exit":
             db.end();
             break;
@@ -159,12 +173,31 @@ function viewEmployeesByDepartment() {
       menuPrompt();
     });
 }
+//----------------------------------------------------------------------Get-----------------------------------------------------------------------------//
+// function getRole () {
+//   roleArray = [];
+//   db.query(`SELECT id, title FROM role`, function (err, results) {
+//       results.forEach(role => {
+//           let title = role.id + " - " + role.title
+//           roleArray.push(title);
+//       });
+//   });
+// }
+// function getDepartment () {
+//   departmentArray = [];
+//   db.query(`SELECT id, department_name FROM department`, function (err, results) {
+//       results.forEach(department => {
+//           let newDep = department.id + " - " + department.department_name
+//           departmentArray.push(newDep);
+//       });
+//   });
+// }
+
 
 //----------------------------------------------------------------------Add-----------------------------------------------------------------------------//
 // Select Role Title for Add Employee prompt
 
 function selectRole() {
-  var roleArr = [];
   var query = `SELECT * FROM role`;
   db.query(query,  (err, res) => {
     if (err) throw err
@@ -178,7 +211,6 @@ function selectRole() {
 
 // Select Manager for Add Employee prompt
 function selectManager() {
-  var managersArr = [];
   //Because the managers can't be their managers to themselves, whenever manager_id is null, the corresponding employee is a manager
   var query = `SELECT first_name, last_name FROM employee WHERE manager_id IS NULL`;
   db.query(query,  (err, res) => {
@@ -226,7 +258,7 @@ function addEmployee() {
         name: "role",
         type: "list",
         message: "What is the employee's role? ",
-        choices: selectRole()
+        choices: selectRole(),
       }
   ]).then(function (res) {
     //Index starting from 0
@@ -258,23 +290,32 @@ function addRole() {
           name: "salary",
           type: "input",
           message: "What is the role's salary?",
-          default: "250000",
+          default: 2500000,
 
         },
         {
           type: "input",
           message: "What is the department ID for this role?",
-          name: "departmentID"
+          name: "departmentId",
+          validate: addDepartmentId => {
+            if (addDepartmentId) {
+                return true;
+            } else {
+                console.log("Please enter a deparment ID.");
+                return false;
+              }
+            }
         } 
     ]).then(function(res) {
         console.log(res);
         var title = res.title;
         var salary = res.salary;
-        var departmentID = res.departmentID;
-        var query = `INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", "${departmentID}")`;
-        db.query(query, (err) => {
+        var departmentId = res.departmentId;
+        var query = `INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", "${departmentId}")`;
+        db.query(query, (err, res) => {
                 if (err) throw err
                 // console.table(res);
+                // printTable(res);
                 console.log( "1 new role is added successfully!\n");
                 menuPrompt();
             }
@@ -357,6 +398,26 @@ function addDepartment() {
     
 //       }
 
-            // "Delete Employee",
-            // "Delete Role",
-            // "Delete Department",
+// "Delete Employee",
+
+// "Delete Role",
+function deleteRole() {
+    inquirer.prompt([
+      {
+      name: "role",
+      type: "list",
+      message: "Select the role you want to delete",
+      choices: selectRole(),
+      }
+    ]).then((res) => {
+      var roleId = selectRole().indexOf(res.role) + 1;
+      var query = `DELETE FROM role WHERE id="${roleId}"`;
+      db.query(query, (err, row) => {
+        if (err) throw err;
+        console.log("A role is deleted");
+        menuPrompt();
+        });
+    });
+};
+
+// "Delete Department",

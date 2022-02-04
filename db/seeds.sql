@@ -8,7 +8,7 @@ VALUES ("Sales"),
 -- Employee role seeds --
 INSERT INTO role (title, salary, department_id)
 VALUES ("Lead Engineer", 200000, 2),
-      ("Account Manager", 150000, 4),
+      ("Legal Team Lead", 150000, 4),
       ("Accountant", 150000, 3),
       ("Sales Lead", 120000, 1),
       ("Salesperson", 100000, 1),
