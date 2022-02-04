@@ -95,11 +95,11 @@ function menuPrompt() {
               updateEmployee();
             break;
     
-          case "Add Role?":
+          case "Add Role":
               addRole();
             break;
     
-          case "Add Department?":
+          case "Add Department":
               addDepartment();
             break;
           case "Exit":
@@ -247,9 +247,6 @@ function addEmployee() {
 
 //Add Role
 function addRole() {
-  console.log("Adding a role\n");
-  var query = `SELECT role.title AS Title, role.salary AS Salary, role.department_id AS Department_ID FROM role`;
-  db.query(query, (err, res) => {
     inquirer.prompt([
         {
           name: "title",
@@ -270,25 +267,24 @@ function addRole() {
           name: "departmentID"
         } 
     ]).then(function(res) {
+        console.log(res);
         var title = res.title;
         var salary = res.salary;
         var departmentID = res.departmentID;
         var query = `INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", "${departmentID}")`;
         db.query(query, (err) => {
                 if (err) throw err
-                console.table(res);
+                // console.table(res);
                 console.log( "1 new role is added successfully!\n");
                 menuPrompt();
             }
         )
 
-    });
-  });
+    })
   }
 
   //Add Department
 function addDepartment() {
-  console.log("Adding a department\n");
   inquirer.prompt([
       {
         name: "department",
@@ -311,55 +307,55 @@ function addDepartment() {
 //----------------------------------------------------------------------Update-----------------------------------------------------------------------------//
 //Update Employee
 
-function updateEmployee() {
-    db.query(`
-    SELECT id, first_name, last_name
-    FROM employee`, (err, res) => {
-    // console.log(res)
-     if (err) throw err
-     console.log(res)
-    inquirer.prompt([
-          {
-            name: "lastName",
-            type: "rawlist",
-            choices: function() {
-              var lastName = [];
-              for (var i = 0; i < res.length; i++) {
-                lastName.push(res[i].last_name);
-              }
-              return lastName;
-            },
-            message: "What is the Employee's last name? ",
-          },
-          {
-            name: "role",
-            type: "rawlist",
-            message: "What is the Employees new title? ",
-            choices: selectRole()
-          },
-      ]).then(function(res) {
-        var roleId = selectRole().indexOf(res.role) + 1
-        db.query(`UPDATE employee SET WHERE ?`, 
-        {
-          last_name: res.lastName
+// function updateEmployee() {
+//     db.query(`
+//     SELECT id, first_name, last_name
+//     FROM employee`, (err, res) => {
+//     // console.log(res)
+//      if (err) throw err
+//      console.log(res)
+//     inquirer.prompt([
+//           {
+//             name: "lastName",
+//             type: "rawlist",
+//             choices: function() {
+//               var lastName = [];
+//               for (var i = 0; i < res.length; i++) {
+//                 lastName.push(res[i].last_name);
+//               }
+//               return lastName;
+//             },
+//             message: "What is the Employee's last name? ",
+//           },
+//           {
+//             name: "role",
+//             type: "rawlist",
+//             message: "What is the Employees new title? ",
+//             choices: selectRole()
+//           },
+//       ]).then(function(res) {
+//         var roleId = selectRole().indexOf(res.role) + 1
+//         db.query(`UPDATE employee SET WHERE ?`, 
+//         {
+//           last_name: res.lastName
            
-        }, 
-        {
-          role_id: roleId
+//         }, 
+//         {
+//           role_id: roleId
            
-        }, 
-        function(err){
-            if (err) throw err
-            console.table(res)
-            console.log( "The Employee is updated successfully!\n");
-            menuPrompt();
+//         }, 
+//         function(err){
+//             if (err) throw err
+//             console.table(res)
+//             console.log( "The Employee is updated successfully!\n");
+//             menuPrompt();
 
-          })
+//           })
   
-        });
-      });
+//         });
+//       });
     
-      }
+//       }
 
             // "Delete Employee",
             // "Delete Role",
