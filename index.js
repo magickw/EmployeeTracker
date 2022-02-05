@@ -299,7 +299,7 @@ function addEmployee() {
         name: "manager",
         type: "list",
         message: "Who is the employee's manager? ",
-        choices: selectMangaer()
+        choices: selectManager()
       }
   ]).then(function (res) {
     //Index starting from 0

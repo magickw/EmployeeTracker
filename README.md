@@ -51,8 +51,10 @@ Below is the demostration of this application:
 <img src="images/demo.gif" alt="demo" />
 Screenshot of viewing employees
 <img src="images/view.png" alt="view" />
-Screenshot of adding role and employee
-<img src="images/add.png" alt="add" />
+Screenshot of adding a role
+<img src="images/addrole.png" alt="addrole" />
+Screenshot of adding an employee
+<img src="images/addrole.png" alt="addemployee" />
 
 **[⬆ back to top](#table-of-contents)**
 
