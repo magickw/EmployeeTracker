@@ -130,33 +130,33 @@ function menuPrompt() {
   });
 }
 
-// function getRoles(){
-//   db.query(`SELECT id, title FROM role`, (err, res) => {
-//     if (err) throw err;
-//     roles = res;
-//   })
-// };
+function getRoles(){
+  db.query(`SELECT id, title FROM role`, (err, res) => {
+    if (err) throw err;
+    roles = res;
+  })
+};
 
-// function getDepartments(){
-//   db.query(`SELECT id, name FROM department`, (err, res) => {
-//     if (err) throw err;
-//     departments = res;
-//   })
-// };
+function getDepartments(){
+  db.query(`SELECT id, name FROM department`, (err, res) => {
+    if (err) throw err;
+    departments = res;
+  })
+};
 
-// function getManagers(){
-//   db.query(`SELECT id, first_name, CONCAT_WS(' ', first_name, last_name) AS Managers FROM employee`, (err, res) => {
-//     if (err) throw err;
-//     managers = res;
-//   })
-// };
+function getManagers(){
+  db.query(`SELECT id, first_name, CONCAT_WS(' ', first_name, last_name) AS Managers FROM employee`, (err, res) => {
+    if (err) throw err;
+    managers = res;
+  })
+};
 
-// function getEmployees(){
-//   db.query(`SELECT id, CONCAT_WS(' ', first_name, last_name) AS Employees FROM employee`, (err, res) => {
-//     if (err) throw err;
-//     managers = res;
-//   })
-// };
+function getEmployees(){
+  db.query(`SELECT id, CONCAT_WS(' ', first_name, last_name) AS Employees FROM employee`, (err, res) => {
+    if (err) throw err;
+    managers = res;
+  })
+};
 
 //----------------------------------------------------------------------View-----------------------------------------------------------------------------//
 
@@ -302,7 +302,7 @@ function addEmployee() {
     var roleId = selectRole().indexOf(res.role) + 1;
     var managerId = selectManager().indexOf(res.choice) + 1;
     var query =`INSERT INTO employee (first_name, last_name, manager_id, role_id) VALUES ("${firstName}", "${lastName}", "${managerId}", "${roleId}")`;
-    db.query(query, (err) => {
+    db.query(query, (err, res) => {
         if (err) throw err
         console.table(res);
         console.log( `1 new employeed is added successfully!\n`);
@@ -352,6 +352,8 @@ function addRole() {
                 // console.table(res);
                 // printTable(res);
                 console.log( "One new role is added successfully!\n");
+                getRoles();
+                console.log(roles);
                 menuPrompt();
             }
         )
@@ -372,8 +374,9 @@ function addDepartment() {
     var query = `INSERT INTO department (name) VALUES ("${department}")`;
     db.query(query, (err, res) =>{
             if (err) throw err
-            console.table(res);
+            // console.table(res);
             console.log( "One new department is added successfully!\n");
+            getDepartments(res);
             menuPrompt();
           }
       )
@@ -381,57 +384,57 @@ function addDepartment() {
 }
 
 //----------------------------------------------------------------------Update-----------------------------------------------------------------------------//
-//Update Employee
+// Update Employee
 
-// function updateEmployee() {
-//     db.query(`
-//     SELECT id, first_name, last_name
-//     FROM employee`, (err, res) => {
-//     // console.log(res)
-//      if (err) throw err
-//      console.log(res)
-//     inquirer.prompt([
-//           {
-//             name: "lastName",
-//             type: "rawlist",
-//             choices: function() {
-//               var lastName = [];
-//               for (var i = 0; i < res.length; i++) {
-//                 lastName.push(res[i].last_name);
-//               }
-//               return lastName;
-//             },
-//             message: "What is the Employee's last name? ",
-//           },
-//           {
-//             name: "role",
-//             type: "rawlist",
-//             message: "What is the Employees new title? ",
-//             choices: selectRole()
-//           },
-//       ]).then(function(res) {
-//         var roleId = selectRole().indexOf(res.role) + 1
-//         db.query(`UPDATE employee SET WHERE ?`, 
-//         {
-//           last_name: res.lastName
+function updateEmployee() {
+    db.query(`
+    SELECT id, first_name, last_name
+    FROM employee`, (err, res) => {
+    // console.log(res)
+     if (err) throw err
+     console.log(res)
+    inquirer.prompt([
+          {
+            name: "lastName",
+            type: "rawlist",
+            choices: function() {
+              var lastName = [];
+              for (var i = 0; i < res.length; i++) {
+                lastName.push(res[i].last_name);
+              }
+              return lastName;
+            },
+            message: "What is the Employee's last name? ",
+          },
+          {
+            name: "role",
+            type: "rawlist",
+            message: "What is the Employees new title? ",
+            choices: selectRole()
+          },
+      ]).then(function(res) {
+        var roleId = selectRole().indexOf(res.role) + 1
+        db.query(`UPDATE employee SET WHERE ?`, 
+        {
+          last_name: res.lastName
            
-//         }, 
-//         {
-//           role_id: roleId
+        }, 
+        {
+          role_id: roleId
            
-//         }, 
-//         function(err){
-//             if (err) throw err
-//             console.table(res)
-//             console.log( "The Employee is updated successfully!\n");
-//             menuPrompt();
+        }, 
+        function(err){
+            if (err) throw err
+            console.table(res)
+            console.log( "The Employee is updated successfully!\n");
+            menuPrompt();
 
-//           })
+          })
   
-//         });
-//       });
+        });
+      });
     
-//       }
+      }
 
 // "Delete Employee",
 
@@ -439,14 +442,14 @@ function addDepartment() {
 function deleteRole() {
     inquirer.prompt([
       {
-      name: "role",
+      name: "Role",
       type: "list",
       message: "Select the role you want to delete",
       choices: selectRole(),
       }
     ]).then((res) => {
-      var roleId = selectRole().indexOf(res.role) + 1;
-      var query = `DELETE FROM role WHERE id="${roleId}"`;
+      var role_Id = selectRole().indexOf(res.Role) + 1;
+      var query = `DELETE FROM role WHERE id="${role_Id}"`;
       db.query(query, (err, res) => {
         if (err) throw err;
         console.log("A role is deleted");
