@@ -52,7 +52,6 @@ Below is the demostration of this application:
 
 **[⬆ back to top](#table-of-contents)**
 
-**[⬆ back to top](#table-of-contents)**
 ## Built With
 
 * [Javascript](https://developer.mozilla.org/en-US/docs/Web/Javascript)
