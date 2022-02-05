@@ -35,17 +35,22 @@ Optional installations:
 
 `npm install figlet` -- Generating text banner `Employee Tracker`
 
+**[⬆ back to top](#table-of-contents)**
+
 
 ## Usage
 Type the following command in your termimal:
 
 `node index.js`
 
+**[⬆ back to top](#table-of-contents)**
+
 
 ## Demo
 Below is the demostration of this application:
 <img src="images/demo.gif" alt="demo" />
 
+**[⬆ back to top](#table-of-contents)**
 
 **[⬆ back to top](#table-of-contents)**
 ## Built With
