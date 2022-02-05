@@ -49,10 +49,6 @@ db.connect(function(err) {
   if (err) throw err
   //runs menu prompts
   menuPrompt();
-  // getRoles();
-  // getDepartments();
-  // getManagers();
-  // getEmployees();
 });
 
 //Menue prompts//
@@ -130,19 +126,7 @@ function menuPrompt() {
   });
 }
 
-function getRoles(){
-  db.query(`SELECT id, title FROM role`, (err, res) => {
-    if (err) throw err;
-    roles = res;
-  })
-};
 
-function getDepartments(){
-  db.query(`SELECT id, name FROM department`, (err, res) => {
-    if (err) throw err;
-    departments = res;
-  })
-};
 
 function getManagers(){
   db.query(`SELECT id, first_name, CONCAT_WS(' ', first_name, last_name) AS Managers FROM employee`, (err, res) => {
@@ -208,17 +192,33 @@ function viewEmployeesByDepartment() {
       menuPrompt();
     });
 }
-//----------------------------------------------------------------------Get-----------------------------------------------------------------------------//
-// function getRole () {
+//View roles
+
+function viewRoles(){
+  db.query(`SELECT id AS ID, title AS Title FROM role`, (err, res) => {
+    if (err) throw err;
+    printTable(res);
+  })
+};
+
+//View Departments
+function viewDepartments(){
+  db.query(`SELECT id AS ID, name AS Name FROM department`, (err, res) => {
+    if (err) throw err;
+    printTable(res);
+  })
+};
+// function viewRoles () {
 //   roleArr = [];
-//   db.query(`SELECT id, title FROM role`, function (err, res) => {
+//   db.query(`SELECT id, title FROM role`, (err, res) => {
 //       results.forEach(role => {
 //           let title = role.id + " - " + role.title
 //           roleArr.push(title);
+
 //       });
 //   });
 // }
-// function getDepartment () {
+// function viewDepartments () {
 //   departmentArr = [];
 //   db.query(`SELECT id, department_name FROM department`, (err, res) => {
 //       results.forEach(department => {
@@ -310,10 +310,13 @@ function addEmployee() {
     var query =`INSERT INTO employee (first_name, last_name, manager_id, role_id) VALUES ("${firstName}", "${lastName}", "${managerId}", "${roleId}")`;
     db.query(query, (err, res) => {
         if (err) throw err
-        console.table(res);
+        // console.table(res);
+        console.log('----------------\n');
+        viewAllEmployees();
         console.log( `1 new employeed is added successfully!\n`);
-        menuPrompt();
+        
     })
+    menuPrompt();
 
 })
 }
@@ -325,13 +328,13 @@ function addRole() {
           name: "title",
           type: "input",
           message: "What is the role's title?",
-          default: "CTO",
+          default: "Senior Software Engineer",
         },
         {
           name: "salary",
           type: "input",
           message: "What is the role's salary?",
-          default: 2500000,
+          default: 1800000,
 
         },
         {
@@ -355,15 +358,14 @@ function addRole() {
         var query = `INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", "${departmentId}")`;
         db.query(query, (err, res) => {
                 if (err) throw err
-                // console.table(res);
-                // printTable(res);
+                //console.table(res);
+                console.log('----------------\n');
+                viewRoles();
                 console.log( "One new role is added successfully!\n");
-                getRoles();
-                console.log(roles);
                 menuPrompt();
             }
         )
-
+        
     })
   }
 
@@ -373,7 +375,8 @@ function addDepartment() {
       {
         name: "department",
         type: "input",
-        message: "What dpartment would you like to add?"
+        message: "What dpartment would you like to add?",
+        default: "Marketing",
       }
   ]).then(function(res) {
     var department = res.department;
@@ -381,8 +384,9 @@ function addDepartment() {
     db.query(query, (err, res) =>{
             if (err) throw err
             // console.table(res);
+            console.log('----------------\n');
+            viewDepartments();
             console.log( "One new department is added successfully!\n");
-            getDepartments(res);
             menuPrompt();
           }
       )
@@ -431,12 +435,13 @@ function updateEmployee() {
         }, 
         function(err){
             if (err) throw err
-            console.table(res)
+            //console.table(res);
+            console.log('----------------\n');
+            viewAllEmployees();
             console.log( "The Employee is updated successfully!\n");
-            menuPrompt();
 
           })
-  
+          menuPrompt();
         });
       });
     
@@ -458,9 +463,12 @@ function deleteRole() {
       var query = `DELETE FROM role WHERE id=${role_Id}`;
       db.query(query, (err, res) => {
         if (err) throw err
+        console.log('----------------\n');
+        viewRoles();
         console.log("A role is deleted");
-        menuPrompt();
+        
         });
+        menuPrompt();
     });
 };
 
