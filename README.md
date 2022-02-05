@@ -49,6 +49,10 @@ Type the following command in your termimal:
 ## Demo
 Below is the demostration of this application:
 <img src="images/demo.gif" alt="demo" />
+Screenshot of viewing employees
+<img src="images/view.png" alt="view" />
+Screenshot of adding role and employee
+<img src="images/add.png" alt="add" />
 
 **[⬆ back to top](#table-of-contents)**
 
