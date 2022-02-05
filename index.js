@@ -316,7 +316,6 @@ function addEmployee() {
         console.log( `1 new employeed is added successfully!\n`);
         
     })
-    menuPrompt();
 
 })
 }
