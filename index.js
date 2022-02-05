@@ -210,20 +210,20 @@ function viewEmployeesByDepartment() {
 }
 //----------------------------------------------------------------------Get-----------------------------------------------------------------------------//
 // function getRole () {
-//   roleArray = [];
-//   db.query(`SELECT id, title FROM role`, function (err, results) {
+//   roleArr = [];
+//   db.query(`SELECT id, title FROM role`, function (err, res) => {
 //       results.forEach(role => {
 //           let title = role.id + " - " + role.title
-//           roleArray.push(title);
+//           roleArr.push(title);
 //       });
 //   });
 // }
 // function getDepartment () {
-//   departmentArray = [];
-//   db.query(`SELECT id, department_name FROM department`, function (err, results) {
+//   departmentArr = [];
+//   db.query(`SELECT id, department_name FROM department`, (err, res) => {
 //       results.forEach(department => {
 //           let newDep = department.id + " - " + department.department_name
-//           departmentArray.push(newDep);
+//           departmentArr.push(newDep);
 //       });
 //   });
 // }
@@ -293,14 +293,20 @@ function addEmployee() {
         name: "role",
         type: "list",
         message: "What is the employee's role? ",
-        choices: selectRole(),
+        choices: selectRole()
+      },
+      {
+        name: "manager",
+        type: "list",
+        message: "Who is the employee's manager? ",
+        choices: selectMangaer()
       }
   ]).then(function (res) {
     //Index starting from 0
     var firstName = res.firstname;
     var lastName = res.lastname;
     var roleId = selectRole().indexOf(res.role) + 1;
-    var managerId = selectManager().indexOf(res.choice) + 1;
+    var managerId = selectManager().indexOf(res.manager) + 1;
     var query =`INSERT INTO employee (first_name, last_name, manager_id, role_id) VALUES ("${firstName}", "${lastName}", "${managerId}", "${roleId}")`;
     db.query(query, (err, res) => {
         if (err) throw err
@@ -442,16 +448,16 @@ function updateEmployee() {
 function deleteRole() {
     inquirer.prompt([
       {
-      name: "Role",
+      name: "deleteRole",
       type: "list",
       message: "Select the role you want to delete",
       choices: selectRole(),
       }
     ]).then((res) => {
-      var role_Id = selectRole().indexOf(res.Role) + 1;
-      var query = `DELETE FROM role WHERE id="${role_Id}"`;
+      var role_Id = selectRole().indexOf(res.deleteRole) + 1;
+      var query = `DELETE FROM role WHERE id=${role_Id}`;
       db.query(query, (err, res) => {
-        if (err) throw err;
+        if (err) throw err
         console.log("A role is deleted");
         menuPrompt();
         });
