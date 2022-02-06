@@ -413,12 +413,12 @@ function updateEmployee() {
               }
               return lastName;
             },
-            message: "What is the Employee's last name? ",
+            message: "What is the employee's last name? ",
           },
           {
             name: "role",
             type: "rawlist",
-            message: "What is the Employees new title? ",
+            message: "What is the employee's new title? ",
             choices: selectRole()
           },
       ]).then(function(res) {
@@ -437,10 +437,10 @@ function updateEmployee() {
             //console.table(res);
             console.log('----------------\n');
             viewAllEmployees();
-            console.log( "The Employee is updated successfully!\n");
+            console.log( "The employee is updated successfully!\n");
 
           })
-          menuPrompt();
+          
         });
       });
     
