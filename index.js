@@ -78,36 +78,37 @@ function menuPrompt() {
             viewAllEmployees();
           break;
   
-        case "View All Employees by Role":
-          viewEmployeesByRole();
+          case "View All Employees by Role":
+            viewEmployeesByRole();
           break;
 
-        case "View All Emplyees by Deparment":
-          viewEmployeesByDepartment();
+          case "View All Emplyees by Deparment":
+            viewEmployeesByDepartment();
           break;
 
         // case "View All Employees by Managers":
         //     viewEmployeesByManager();
         //   break;
-        case "Add Employee":
-              addEmployee();
-            break;
 
-        case "Update Employee":
-              updateEmployee();
-            break;
+          case "Add Employee":
+            addEmployee();
+          break;
     
           case "Add Role":
-              addRole();
-            break;
+            addRole();
+          break;
     
           case "Add Department":
-              addDepartment();
-            break;
+            addDepartment();
+          break;
+
+          case "Update Employee":
+            updateEmployee();
+          break;
 
           case "Delete Role":
-              deleteRole();
-           break;
+            deleteRole();
+          break;
 
           // case "Delete Employee":
           //      deleteRole();
@@ -119,20 +120,11 @@ function menuPrompt() {
             
           case "Exit":
             db.end();
-            break;
+          break;
   
           }
   });
 }
-
-
-
-// function getManagers(){
-//   db.query(`SELECT id, first_name, CONCAT_WS(' ', first_name, last_name) AS Managers FROM employee`, (err, res) => {
-//     if (err) throw err;
-//     managers = res;
-//   })
-// };
 
 
 
@@ -200,6 +192,7 @@ function viewDepartments(){
   db.query(`SELECT id AS ID, name AS Name FROM department`, (err, res) => {
     if (err) throw err;
     printTable(res);
+
   })
 };
 
@@ -225,10 +218,10 @@ function selectRole() {
 function selectManager() {
   //Because the managers can't be their managers to themselves, whenever manager_id is null, the corresponding employee is a manager
   var query = `SELECT first_name, last_name FROM employee WHERE manager_id IS NULL`;
-  db.query(query,  (err, res) => {
+  db.query(query, (err, res) => {
     if (err) throw err
     for (var i = 0; i < res.length; i++) {
-      managerArr.push(res[i].first_name);
+      managerArr.push(res[i].last_name);
     }
 
   })
@@ -238,11 +231,11 @@ function selectManager() {
 
 // Select Employee for Update Employee prompt
 function selectEmployee(){
-  var query = `SELECT id, CONCAT_WS(' ', first_name, last_name) AS Employees FROM employee`;
+  var query = `SELECT first_name, last_name FROM employee`;
   db.query(query, (err, res) => {
     if (err) throw err;
     for (var i = 0; i < res.length; i++) {
-      employee.push(res[i].last_name);
+      employeeArr.push(res[i].last_name);
     }
   })
   return employeeArr;
@@ -304,18 +297,17 @@ function addEmployee() {
         choices: selectManager()
       }
   ]).then(function (res) {
-    //Index starting from 0
     var firstName = res.firstname;
     var lastName = res.lastname;
+    //Index starting from 0
     var roleId = selectRole().indexOf(res.role) + 1;
     var managerId = selectManager().indexOf(res.manager) + 1;
     var query =`INSERT INTO employee (first_name, last_name, manager_id, role_id) VALUES ("${firstName}", "${lastName}", "${managerId}", "${roleId}")`;
     db.query(query, (err, res) => {
         if (err) throw err
         // console.table(res);
-        console.log('----------------\n');
         viewAllEmployees();
-        console.log( `1 new employeed is added successfully!\n`);
+        console.log( `One new employee is added successfully! See the updated employee list below.\!\n`);
         
     })
 
@@ -360,13 +352,12 @@ function addRole() {
         db.query(query, (err, res) => {
                 if (err) throw err
                 //console.table(res);
-                console.log('----------------\n');
+                console.log( "One new role is added successfully! See the updated role list below.\n");
                 viewRoles();
-                console.log( "One new role is added successfully!\n");
-                menuPrompt();
+                
             }
         )
-        
+        menuPrompt();
     })
   }
 
@@ -385,12 +376,13 @@ function addDepartment() {
     db.query(query, (err, res) =>{
             if (err) throw err
             // console.table(res);
-            console.log('----------------\n');
+            console.log( "One new department is added successfully! See the updated department list below.\n");
             viewDepartments();
-            console.log( "One new department is added successfully!\n");
-            menuPrompt();
+
           }
+          
       )
+      menuPrompt();
   })
 }
 
@@ -400,16 +392,16 @@ function addDepartment() {
 function updateEmployee() {
     inquirer.prompt([
           {
-            name: "lastname",
+            name: "lastName",
             type: "list",
             message: "What's the last name of the employee you want to update with?",
-            choices: selectEmployee()
+            choices: selectEmployee(),
           },
           {
             name: "role",
             type: "list",
             message: "What is the employee's new role? ",
-            choices: selectRole()
+            choices: selectRole(),
           },
       ]).then(function(res) {
         var roleId = selectRole().indexOf(res.role) + 1
@@ -426,16 +418,15 @@ function updateEmployee() {
             if (err) throw err
             //console.table(res);
             console.log('----------------\n');
-            //view the employee list after an employee is updated.
+            //Run the function to view the employee list after an employee is updated.
             viewAllEmployees();
             console.log( "The employee is updated successfully!\n");
 
           })
           
         });
-      });
+  }
     
-      }
 
 //----------------------------------------------------------------------Delete-----------------------------------------------------------------------------//
 // "Delete Employee",
