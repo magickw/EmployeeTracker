@@ -184,14 +184,16 @@ function viewRoles(){
   db.query(`SELECT id AS ID, title AS Title FROM role`, (err, res) => {
     if (err) throw err;
     printTable(res);
+    menuPrompt();
   })
 };
 
 //View Departments
 function viewDepartments(){
-  db.query(`SELECT id AS ID, name AS Name FROM department`, (err, res) => {
+  db.query(`SELECT id AS ID, name AS Department FROM department`, (err, res) => {
     if (err) throw err;
     printTable(res);
+    menuPrompt();
 
   })
 };
@@ -306,9 +308,8 @@ function addEmployee() {
     db.query(query, (err, res) => {
         if (err) throw err
         // console.table(res);
-        viewAllEmployees();
         console.log( `A new employee ${firstName}, ${lastName} is added successfully! See the updated employee list below.\!\n`);
-        
+        viewEmployeesByRole(); 
     })
 });
 }
@@ -352,8 +353,7 @@ function addRole() {
                 if (err) throw err
                 //console.table(res);
                 console.log(`${title} is added successfully! See the updated role list below.\n`);
-                viewRoles();
-                menuPrompt();    
+                viewRoles(); 
             })
     });
   }
@@ -375,7 +375,6 @@ function addDepartment() {
             // console.table(res);
             console.log(`${department} is added successfully! See the updated department list below.\n`);
             viewDepartments();
-            menuPrompt();
 
           })
   })
