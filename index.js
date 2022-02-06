@@ -7,14 +7,13 @@ const mysql = require('mysql2');
 const figlet = require('figlet');
 //For console table printing
 const { printTable } = require('console-table-printer');
-const { from } = require('mute-stream');
 
+//Define the arrays of roles, managers, departments
 const roleArr = [];
-const managersArr = [];
-// let roles;
-// let departments;
-// let managers;
-// let employees;
+const managerArr = [];
+// const departmentArr = [];
+const employeeArr = [];
+
 
 //initial port
 const PORT = process.env.PORT || 3001;
@@ -128,19 +127,14 @@ function menuPrompt() {
 
 
 
-function getManagers(){
-  db.query(`SELECT id, first_name, CONCAT_WS(' ', first_name, last_name) AS Managers FROM employee`, (err, res) => {
-    if (err) throw err;
-    managers = res;
-  })
-};
+// function getManagers(){
+//   db.query(`SELECT id, first_name, CONCAT_WS(' ', first_name, last_name) AS Managers FROM employee`, (err, res) => {
+//     if (err) throw err;
+//     managers = res;
+//   })
+// };
 
-function getEmployees(){
-  db.query(`SELECT id, CONCAT_WS(' ', first_name, last_name) AS Employees FROM employee`, (err, res) => {
-    if (err) throw err;
-    managers = res;
-  })
-};
+
 
 //----------------------------------------------------------------------View-----------------------------------------------------------------------------//
 
@@ -208,28 +202,11 @@ function viewDepartments(){
     printTable(res);
   })
 };
-// function viewRoles () {
-//   roleArr = [];
-//   db.query(`SELECT id, title FROM role`, (err, res) => {
-//       results.forEach(role => {
-//           let title = role.id + " - " + role.title
-//           roleArr.push(title);
-
-//       });
-//   });
-// }
-// function viewDepartments () {
-//   departmentArr = [];
-//   db.query(`SELECT id, department_name FROM department`, (err, res) => {
-//       results.forEach(department => {
-//           let newDep = department.id + " - " + department.department_name
-//           departmentArr.push(newDep);
-//       });
-//   });
-// }
 
 
-//----------------------------------------------------------------------Add-----------------------------------------------------------------------------//
+
+//----------------------------------------------------------------------Select-----------------------------------------------------------------------------//
+
 // Select Role Title for Add Employee prompt
 
 function selectRole() {
@@ -251,13 +228,38 @@ function selectManager() {
   db.query(query,  (err, res) => {
     if (err) throw err
     for (var i = 0; i < res.length; i++) {
-      managersArr.push(res[i].first_name);
+      managerArr.push(res[i].first_name);
     }
 
   })
-  return managersArr;
+  return managerArr;
 }
 
+
+// Select Employee for Update Employee prompt
+function selectEmployee(){
+  var query = `SELECT id, CONCAT_WS(' ', first_name, last_name) AS Employees FROM employee`;
+  db.query(query, (err, res) => {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      employee.push(res[i].last_name);
+    }
+  })
+  return employeeArr;
+};
+
+// function selectDepartment(){
+//   var query = `SELECT * FROM department`;
+//   db.query(query, (err, res) => {
+//     if (err) throw err;
+//     for (var i = 0; i < res.length; i++) {
+//       department.push(res[i]);
+//     }
+//   })
+//   return departmentArr;
+// };
+
+//----------------------------------------------------------------------Add-----------------------------------------------------------------------------//
 //Add an Employee
 function addEmployee() { 
   inquirer.prompt([
@@ -320,7 +322,7 @@ function addEmployee() {
 })
 }
 
-//Add Role
+//Add a role
 function addRole() {
     inquirer.prompt([
         {
@@ -350,7 +352,7 @@ function addRole() {
             }
         } 
     ]).then(function(res) {
-        console.log(res);
+        // console.log(res);
         var title = res.title;
         var salary = res.salary;
         var departmentId = res.departmentId;
@@ -396,29 +398,17 @@ function addDepartment() {
 // Update Employee
 
 function updateEmployee() {
-    db.query(`
-    SELECT id, first_name, last_name
-    FROM employee`, (err, res) => {
-    // console.log(res)
-     if (err) throw err
-     console.log(res)
     inquirer.prompt([
           {
-            name: "lastName",
-            type: "rawlist",
-            choices: function() {
-              var lastName = [];
-              for (var i = 0; i < res.length; i++) {
-                lastName.push(res[i].last_name);
-              }
-              return lastName;
-            },
-            message: "What is the employee's last name? ",
+            name: "lastname",
+            type: "list",
+            message: "What's the last name of the employee you want to update with?",
+            choices: selectEmployee()
           },
           {
             name: "role",
-            type: "rawlist",
-            message: "What is the employee's new title? ",
+            type: "list",
+            message: "What is the employee's new role? ",
             choices: selectRole()
           },
       ]).then(function(res) {
@@ -436,6 +426,7 @@ function updateEmployee() {
             if (err) throw err
             //console.table(res);
             console.log('----------------\n');
+            //view the employee list after an employee is updated.
             viewAllEmployees();
             console.log( "The employee is updated successfully!\n");
 
@@ -446,6 +437,7 @@ function updateEmployee() {
     
       }
 
+//----------------------------------------------------------------------Delete-----------------------------------------------------------------------------//
 // "Delete Employee",
 
 // "Delete Role",
@@ -463,11 +455,12 @@ function deleteRole() {
       db.query(query, (err, res) => {
         if (err) throw err
         console.log('----------------\n');
+        //view the role list after a role is deleted.
         viewRoles();
         console.log("A role is deleted");
-        
-        });
         menuPrompt();
+        });
+        
     });
 };
 
