@@ -307,11 +307,10 @@ function addEmployee() {
         if (err) throw err
         // console.table(res);
         viewAllEmployees();
-        console.log( `One new employee is added successfully! See the updated employee list below.\!\n`);
+        console.log( `A new employee ${firstName}, ${lastName} is added successfully! See the updated employee list below.\!\n`);
         
     })
-
-})
+});
 }
 
 //Add a role
@@ -352,13 +351,11 @@ function addRole() {
         db.query(query, (err, res) => {
                 if (err) throw err
                 //console.table(res);
-                console.log( "One new role is added successfully! See the updated role list below.\n");
+                console.log(`${title} is added successfully! See the updated role list below.\n`);
                 viewRoles();
-                
-            }
-        )
-        menuPrompt();
-    })
+                menuPrompt();    
+            })
+    });
   }
 
   //Add Department
@@ -376,13 +373,11 @@ function addDepartment() {
     db.query(query, (err, res) =>{
             if (err) throw err
             // console.table(res);
-            console.log( "One new department is added successfully! See the updated department list below.\n");
+            console.log(`${department} is added successfully! See the updated department list below.\n`);
             viewDepartments();
+            menuPrompt();
 
-          }
-          
-      )
-      menuPrompt();
+          })
   })
 }
 
