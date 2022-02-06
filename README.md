@@ -47,7 +47,7 @@ Type the following command in your termimal:
 
 
 ## Demo
-Below is the demostration of this application. The walk-through video can be found on my <a href="https://youtu.be/C7sMZDRwdlk">Youtube Channel</a>.
+Below is the demostration of this application. The walk-through video can be found on my <a href="https://youtu.be/I7hn0SjA0h8">Youtube Channel</a>.
 <img src="images/demo.gif" alt="demo" />
 Screenshot of viewing employees
 <img src="images/view.png" alt="view" />
@@ -73,7 +73,7 @@ This application is licensed under MIT license.
 **[⬆ back to top](#table-of-contents)**
 
 ## Contributing
-This application is developed by Baofeng Guo. If you would like to contribute it, please follow the guidelines for how to do so.
+This application is developed by <a href="https://www.linkedin.com/in/bfguo/">Baofeng Guo</a>. If you would like to contribute it, please follow the guidelines for how to do so.
 
 **[⬆ back to top](#table-of-contents)**
 
