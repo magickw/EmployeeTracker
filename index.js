@@ -11,7 +11,7 @@ const { printTable } = require('console-table-printer');
 //Define the arrays of roles, managers, departments
 const roleArr = [];
 const managerArr = [];
-// const departmentArr = [];
+// const departmentArr = [];git 
 const employeeArr = [];
 
 
@@ -137,7 +137,7 @@ function viewAllEmployees() {
   FROM employee 
   INNER JOIN role ON role.id = employee.role_id
   INNER JOIN department ON department.id = role.department_id
-  LEFT JOIN employee e ON employee.manager_id = e.id
+  LEFT JOIN employee e ON employee.manager_id = manager.id
   ORDER BY employee.id`, (err, res) => {
       if (err) throw err
       // console.table(res);
@@ -308,7 +308,7 @@ function addEmployee() {
     db.query(query, (err, res) => {
         if (err) throw err
         // console.table(res);
-        console.log( `A new employee ${firstName}, ${lastName} is added successfully! See the updated employee list below.\!\n`);
+        console.log( `A new employee ${firstName} ${lastName} is added successfully! See the updated employee list below.\!\n`);
         viewEmployeesByRole(); 
     })
 });
@@ -373,7 +373,7 @@ function addDepartment() {
     db.query(query, (err, res) =>{
             if (err) throw err
             // console.table(res);
-            console.log(`${department} is added successfully! See the updated department list below.\n`);
+            console.log(`${department} Department is added successfully! See the updated department list below.\n`);
             viewDepartments();
 
           })
@@ -389,13 +389,13 @@ function updateEmployee() {
             name: "lastName",
             type: "list",
             message: "What's the last name of the employee you want to update with?",
-            choices: selectEmployee(),
+            choices: selectEmployee()
           },
           {
             name: "role",
             type: "list",
             message: "What is the employee's new role? ",
-            choices: selectRole(),
+            choices: selectRole()
           },
       ]).then(function(res) {
         var roleId = selectRole().indexOf(res.role) + 1
@@ -432,7 +432,7 @@ function deleteRole() {
       name: "deleteRole",
       type: "list",
       message: "Select the role you want to delete",
-      choices: selectRole(),
+      choices: selectRole()
       }
     ]).then((res) => {
       var role_Id = selectRole().indexOf(res.deleteRole) + 1;
@@ -440,10 +440,9 @@ function deleteRole() {
       db.query(query, (err, res) => {
         if (err) throw err
         console.log('----------------\n');
+        console.log("A role is deleted");
         //view the role list after a role is deleted.
         viewRoles();
-        console.log("A role is deleted");
-        menuPrompt();
         });
         
     });

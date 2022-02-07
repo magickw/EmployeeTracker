@@ -47,7 +47,7 @@ Type the following command in your termimal:
 
 
 ## Demo
-Below is the demostration of this application. The walk-through video can be found on my <a href="https://youtu.be/I7hn0SjA0h8">Youtube Channel</a>.
+Below is the demostration of this application. The walk-through video can be found on my <a href="https://youtu.be/OVuigElEAQo">Youtube Channel</a>.
 <img src="images/demo.gif" alt="demo" />
 Screenshot of viewing employees
 <img src="images/view.png" alt="view" />
