@@ -53,8 +53,10 @@ Screenshot of viewing employees
 <img src="images/view.png" alt="view" />
 Screenshot of adding a role
 <img src="images/addrole.png" alt="addrole" />
-Screenshot of adding an employee and a department
+Screenshot of adding an employee
 <img src="images/addemployee.png" alt="addemployee" />
+Screenshot of adding a department
+<img src="images/adddept.png" alt="adddepartment" />
 
 **[⬆ back to top](#table-of-contents)**
 

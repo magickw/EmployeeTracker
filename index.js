@@ -308,7 +308,7 @@ function addEmployee() {
     db.query(query, (err, res) => {
         if (err) throw err
         // console.table(res);
-        console.log( `A new employee ${firstName} ${lastName} is added successfully! See the updated employee list below.\!\n`);
+        console.log( `A new employee ${firstName} ${lastName} is added successfully! See the updated employee list below.\n`);
         viewEmployeesByRole(); 
     })
 });
