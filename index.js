@@ -11,7 +11,7 @@ const { printTable } = require('console-table-printer');
 //Define the arrays of roles, managers, departments
 const roleArr = [];
 const managerArr = [];
-// const departmentArr = [];git 
+// const departmentArr = [];
 const employeeArr = [];
 
 
@@ -308,7 +308,7 @@ function addEmployee() {
     db.query(query, (err, res) => {
         if (err) throw err
         // console.table(res);
-        console.log( `A new employee ${firstName} ${lastName} is added successfully! See the updated employee list below.\n`);
+        console.log( `${firstName} ${lastName}, a new employee, is added successfully! See the updated employee list below.\n`);
         viewEmployeesByRole(); 
     })
 });
@@ -352,7 +352,7 @@ function addRole() {
         db.query(query, (err, res) => {
                 if (err) throw err
                 //console.table(res);
-                console.log(`${title} is added successfully! See the updated role list below.\n`);
+                console.log(`${title}, a new role, is added successfully! See the updated role list below.\n`);
                 viewRoles(); 
             })
     });
@@ -373,7 +373,7 @@ function addDepartment() {
     db.query(query, (err, res) =>{
             if (err) throw err
             // console.table(res);
-            console.log(`${department} Department is added successfully! See the updated department list below.\n`);
+            console.log(`${department} Department, a new department, is added successfully! See the updated department list below.\n`);
             viewDepartments();
 
           })
@@ -392,29 +392,19 @@ function updateEmployee() {
             choices: selectEmployee()
           },
           {
-            name: "role",
+            name: "newRole",
             type: "list",
             message: "What is the employee's new role? ",
             choices: selectRole()
           },
       ]).then(function(res) {
-        var roleId = selectRole().indexOf(res.role) + 1
-        db.query(`UPDATE employee SET WHERE ?`, 
-        {
-          last_name: res.lastName
-           
-        }, 
-        {
-          role_id: roleId
-           
-        }, 
-        function(err){
+        var roleId = selectRole().indexOf(res.newRole) + 1
+        db.query(`UPDATE employee SET employee.role_id = ${roleId} WHERE employee.last_name = ${res.lastName}`, (err, res) => {
             if (err) throw err
             //console.table(res);
-            console.log('----------------\n');
+            console.log( "The employee is updated successfully!\n");
             //Run the function to view the employee list after an employee is updated.
             viewAllEmployees();
-            console.log( "The employee is updated successfully!\n");
 
           })
           
