@@ -59,9 +59,11 @@ function menuPrompt() {
   name: "choice",
   choices: [
             "View All Employees", 
-            "View All Employees by Role",
-            "View All Emplyees by Deparment",
-            //"View All Employees by Manager" 
+            // "View All Employees by Role",
+            // "View All Emplyees by Deparment",
+            //"View All Employees by Manager",
+            "View Roles",
+            "View Departments", 
             "Add Employee",
             "Add Role",
             "Add Department",
@@ -78,12 +80,19 @@ function menuPrompt() {
             viewAllEmployees();
           break;
   
-          case "View All Employees by Role":
-            viewEmployeesByRole();
+          // case "View All Employees by Role":
+          //   viewEmployeesByRole();
+          // break;
+
+          // case "View All Emplyees by Deparment":
+          //   viewEmployeesByDepartment();
+          // break;
+          case "View Roles":
+            viewRoles();
           break;
 
-          case "View All Emplyees by Deparment":
-            viewEmployeesByDepartment();
+          case "View Departments":
+            viewDepartments();
           break;
 
         // case "View All Employees by Managers":
@@ -137,7 +146,7 @@ function viewAllEmployees() {
   FROM employee 
   INNER JOIN role ON role.id = employee.role_id
   INNER JOIN department ON department.id = role.department_id
-  LEFT JOIN employee e ON employee.manager_id = manager.id
+  LEFT JOIN employee e ON employee.manager_id = e.id
   ORDER BY employee.id`, (err, res) => {
       if (err) throw err
       // console.table(res);
@@ -147,37 +156,37 @@ function viewAllEmployees() {
     });
 }
 
-//View All Employees by Role
-function viewEmployeesByRole() {
-  console.log("View All Employees By Role\n");
-  db.query(`SELECT employee.first_name AS First_Name, employee.last_name AS Last_Name, role.title AS Title
-  FROM employee
-  JOIN role
-  ON employee.role_id = role.id`, (err, res) => {
-      if (err) throw err
-      // console.table(res);
-      printTable(res);
-      menuPrompt();
-    });
-}
+// //View All Employees by Role
+// function viewEmployeesByRole() {
+//   console.log("View All Employees By Role\n");
+//   db.query(`SELECT employee.first_name AS First_Name, employee.last_name AS Last_Name, role.title AS Title
+//   FROM employee
+//   JOIN role
+//   ON employee.role_id = role.id`, (err, res) => {
+//       if (err) throw err
+//       // console.table(res);
+//       printTable(res);
+//       menuPrompt();
+//     });
+// }
 
-//View All Employees By Department
-function viewEmployeesByDepartment() {
-  console.log("View All Employees By Department\n");
-  db.query(`SELECT employee.first_name AS First_Name, employee.last_name AS Last_Name, department.name AS Department
-  FROM employee
-  JOIN role
-  ON employee.role_id = role.id
-  JOIN department
-  ON role.department_id = department.id
-  ORDER BY employee.id`, 
-  (err, res) => {
-      if (err) throw err
-      // console.table(res);
-      printTable(res);
-      menuPrompt();
-    });
-}
+// //View All Employees By Department
+// function viewEmployeesByDepartment() {
+//   console.log("View All Employees By Department\n");
+//   db.query(`SELECT employee.first_name AS First_Name, employee.last_name AS Last_Name, department.name AS Department
+//   FROM employee
+//   JOIN role
+//   ON employee.role_id = role.id
+//   JOIN department
+//   ON role.department_id = department.id
+//   ORDER BY employee.id`, 
+//   (err, res) => {
+//       if (err) throw err
+//       // console.table(res);
+//       printTable(res);
+//       menuPrompt();
+//     });
+// }
 //View roles
 
 function viewRoles(){
@@ -309,7 +318,7 @@ function addEmployee() {
         if (err) throw err
         // console.table(res);
         console.log( `${firstName} ${lastName}, a new employee, is added successfully! See the updated employee list below.\n`);
-        viewEmployeesByRole(); 
+        viewAllEmployees(); 
     })
 });
 }
